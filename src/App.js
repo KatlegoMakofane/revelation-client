@@ -5,6 +5,7 @@ import Signup from "./components/SignUp/SignUp";
 import Home from "./components/Home/Home";
 import SignIn from "./components/SignIn/SignIn";
 import { collection, doc, getDoc } from "firebase/firestore";
+import "./App.css"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -14,15 +15,21 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         setUser(authUser);
-
+  
         // Fetch user role from Firestore and check if it's admin
         const userDocRef = doc(collection(db, "users"), authUser.uid);
-       
-        const userDocSnapshot = await getDoc(userDocRef);
-        console.log(userDocSnapshot.data().role)
-        if (userDocSnapshot.exists() && userDocSnapshot.data().role === "user") {
-          setisUser(true);
-        } else {
+  
+        try {
+          const userDocSnapshot = await getDoc(userDocRef);
+  
+          if (userDocSnapshot.exists() && userDocSnapshot.data().role === "user") {
+            setisUser(true);
+          } else {
+            setisUser(false);
+          }
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+          // Handle error state here, e.g., set isUser to false or show an error message
           setisUser(false);
         }
       } else {
@@ -30,9 +37,10 @@ function App() {
         setisUser(false); // Reset admin status if not authenticated
       }
     });
-
+  
     return () => unsubscribe();
   }, []);
+  
 
   const handleLogout = async () => {
     try {
