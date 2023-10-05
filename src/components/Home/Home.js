@@ -8,7 +8,8 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(null); // Add selectedColor state
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const fetchProductsForAllUsers = async () => {
@@ -29,7 +30,6 @@ const Home = () => {
         }
 
         setProducts(allProductsData);
-        console.log("Fetched products for all users:", allProductsData);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -38,9 +38,10 @@ const Home = () => {
     fetchProductsForAllUsers();
   }, []);
 
+  // Open modal with selected product
   const openModal = (product) => {
     setSelectedProduct(product);
-    setSelectedColor(product.availableColors[0]); // Set the selected color to the first available color
+    setSelectedColor(product.availableColors[0]);
     setIsModalOpen(true);
   };
 
@@ -48,12 +49,25 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
+  // Filter products based on the selected category
+  const filteredProducts = selectedCategory === "All"
+    ? products
+    : products.filter((product) => product.category === selectedCategory);
+
   return (
     <div className="Home">
       <h2>Home</h2>
 
+      {/* Add category selection buttons */}
+      <div>
+        <button onClick={() => setSelectedCategory("All")}>All</button>
+        <button onClick={() => setSelectedCategory("Winter")}>Winter</button>
+        <button onClick={() => setSelectedCategory("Summer")}>Summer</button>
+        <button onClick={() => setSelectedCategory("Accessories")}>Accessories</button>
+      </div>
+
       <ul>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <li key={product.id}>
             <div>
               {product.colorImages ? (
@@ -87,7 +101,7 @@ const Home = () => {
 
       {isModalOpen && (
         <Modal
-          data={{ title: 'Product Details', product: selectedProduct, selectedColor: selectedColor }} // Pass selectedColor to the modal
+          data={{ title: 'Product Details', product: selectedProduct, selectedColor: selectedColor }}
           closeModal={closeModal}
         />
       )}
