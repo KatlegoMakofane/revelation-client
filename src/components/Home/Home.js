@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { FaTshirt } from 'react-icons/fa';
+import Modal from "../Modal/Modal";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
- 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null); // Add selectedColor state
+
   useEffect(() => {
     const fetchProductsForAllUsers = async () => {
       try {
@@ -33,13 +37,21 @@ const Home = () => {
 
     fetchProductsForAllUsers();
   }, []);
-  
-  // Rest of your component code...
+
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setSelectedColor(product.availableColors[0]); // Set the selected color to the first available color
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="Home">
       <h2>Home</h2>
-     
+
       <ul>
         {products.map((product) => (
           <li key={product.id}>
@@ -66,11 +78,19 @@ const Home = () => {
               <p>Product Name: {product.productName}</p>
               <p>Price: {product.price}</p>
               <p>Colors: {product.availableColors.join(", ")}</p>
-              <p>User UID: {product.userUid}</p> {/* Display the user UID for reference */}
+              <p>User UID: {product.userUid}</p>
+              <button onClick={() => { openModal(product); }}>View Details</button>
             </div>
           </li>
         ))}
       </ul>
+
+      {isModalOpen && (
+        <Modal
+          data={{ title: 'Product Details', product: selectedProduct, selectedColor: selectedColor }} // Pass selectedColor to the modal
+          closeModal={closeModal}
+        />
+      )}
     </div>
   );
 };

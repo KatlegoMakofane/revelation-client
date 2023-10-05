@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavLink } from 'react-router-dom';
 import { auth } from '../../config/firebase';
+import { TextInput } from '../Constance/Constance'; // Import your custom TextInput component
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -22,15 +23,14 @@ const SignIn = () => {
       <h2>Sign In</h2>
       {error && <div className="error-message">{error}</div>}
       <form>
-        <input
-          type="email"
-          placeholder="Email"
+        <TextInput
+          label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <TextInput
           type="password"
-          placeholder="Password"
+          label="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

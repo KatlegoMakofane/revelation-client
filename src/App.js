@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, NavLink } from "react-router-dom";
 import { auth, db } from "./config/firebase";
 import Signup from "./components/SignUp/SignUp";
 import Home from "./components/Home/Home";
 import SignIn from "./components/SignIn/SignIn";
 import { collection, doc, getDoc } from "firebase/firestore";
 import "./App.css"
+import Cart from "./components/Cart/Cart";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,8 +61,14 @@ function App() {
         {isEmailVerified && isUser && (
           <nav>
             <ul>
+            <li>
+              <NavLink to="/home">Home</NavLink>
+              </li>
               <li>
                 <button onClick={handleLogout}>Logout</button>
+              </li>
+              <li>
+              <NavLink to="/cart">Cart</NavLink>
               </li>
             </ul>
           </nav>
@@ -71,13 +78,16 @@ function App() {
           {isEmailVerified && isUser ? (
             <>
             <Route path="/home" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/*" element={<Home />} />
+            <Route path="/*" element={<Navigate to="/home" />} />
+
             </>
           ) : (
             <>
             <Route path="/signup" element={<Signup/>} />
             <Route path="/signin" element={<SignIn/>} />
-            <Route path="/*" element={<Navigate to="/signup" />} />
+            <Route path="/*" element={<Signup/>} />
             </>
           )}
 

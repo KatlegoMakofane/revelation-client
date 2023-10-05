@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { auth, db } from "../../config/firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
 import "./SignUp.css";
+import { TextInput } from "../Constance/Constance"; // Import your custom TextInput component
 
 const SignUp = () => {
   // State variables for user input
@@ -36,7 +37,7 @@ const SignUp = () => {
         const userData = {
           username,
           phoneNumber,
-          role:"user",
+          role: "user",
         };
 
         // Save user data to Firestore
@@ -59,27 +60,25 @@ const SignUp = () => {
           <h2>Step 1: Provide Email, Password, Username, and Phone Number</h2>
           {error && <div className="error-message">{error}</div>}
           <form>
-            <input
-              type="email"
-              placeholder="Email"
+            <TextInput
+              label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <input
+            <TextInput
               type="password"
-              placeholder="Password"
+              label="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <input
-              type="text"
-              placeholder="Username"
+            <TextInput
+              label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <input
+            <TextInput
               type="tel"
-              placeholder="Phone Number"
+              label="Phone Number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
