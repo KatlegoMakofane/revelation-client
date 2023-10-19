@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavLink } from 'react-router-dom';
 import { auth } from '../../config/firebase';
-import { TextInput } from '../Constance/Constance'; // Import your custom TextInput component
+import './SignIn.css'
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -22,21 +22,27 @@ const SignIn = () => {
     <div className="signin-container">
       <h2>Sign In</h2>
       {error && <div className="error-message">{error}</div>}
-      <form>
-        <TextInput
-          label="Email"
+      <form className='form'>
+        <div className='formgroup'>
+        <input
+          type="email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <TextInput
+        </div>
+        <div className='formgroup'>
+        <input
           type="password"
-          label="Password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />
+        /></div>
+          <div className='formgroup'>
         <button type="button" onClick={handleSignIn}>
           Sign In
         </button>
+        </div>
       </form>
       <p>
         Don't have an account? <NavLink to="/signup">Sign Up</NavLink>

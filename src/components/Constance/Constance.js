@@ -1,4 +1,18 @@
-
+export const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+export const shoeSizes = ["US 5", "US 6", "US 7", "US 8", "US 9", "US 10"];
+export const colors = [
+  "Red",
+  "Blue",
+  "Green",
+  "Black",
+  "White",
+  "Yellow",
+  "Orange",
+  "Purple",
+  "Brown",
+  "Gold",  
+  "Silver",
+];
 export const NumberInput = ({ label, value, onChange }) => (
     <div>
         <label>{label}</label>
